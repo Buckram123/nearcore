@@ -800,10 +800,16 @@ impl Handler<Status> for ClientActor {
                 ),
                 current_head_status: head.clone().into(),
                 current_header_head_status: self.client.chain.header_head()?.clone().into(),
-                epoch_info: EpochInfoView { 
+                epoch_info: EpochInfoView {
                     epoch_id: head.epoch_id.0,
-                    start_time: self.client.chain.get_block_by_height(epoch_start_height)?.header().timestamp().to_rfc3339(),
-                    validators: validators.to_vec()
+                    start_time: self
+                        .client
+                        .chain
+                        .get_block_by_height(epoch_start_height)?
+                        .header()
+                        .timestamp()
+                        .to_rfc3339(),
+                    validators: validators.to_vec(),
                 },
             })
         } else {
